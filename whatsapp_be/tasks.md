@@ -151,6 +151,29 @@ console.log(`serer is listening at ${PORT}...`);
   );
   ```
 
+
+
+## Custom logger, handle Server and http errors
+
+Adding a custom logger, Handling uncaughtException, unhandledRejection errors, SIGTERM, and handle http errors.
+
+**Objectifs**
+
+- Adding a custom logger to use instead of using the boring console.log to help us read the console better and separate errors from infos.
+- Handle Server closing when facing uncaughtException, unhandledRejection errors.
+- Close server gracefully on SIGTERM signal.
+- Handle http errors and get proper error messages from server.
+
+```javascript
+import logger from "./configs/logger.config.js";
+
+logger.info(`serer is listening at ${PORT}...`);
+
+logger.info()
+```
+
+
+
 # Problems & Solutions
 
 + Run scripts that set and use environment variables across platforms with cross-env.

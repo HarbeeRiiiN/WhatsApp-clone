@@ -1,5 +1,6 @@
 import app from "./app.js";
 import dotenv from "dotenv";
+import logger from "./configs/logger.config.js";
 
 // dotEnv config
 dotenv.config();
@@ -9,5 +10,5 @@ const PORT = process.env.PORT || 8081;
 console.log(process.env.NODE_ENV);
 
 app.listen(PORT, () => {
-  console.log(`serer is listening at ${PORT}...`);
+  logger.info(`serer is listening at ${PORT}...`);
 });
