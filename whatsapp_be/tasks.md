@@ -14,7 +14,9 @@
     },
    ```
 
-## Add express
+
+
+## express
 
 `yarn add express`
 
@@ -104,3 +106,63 @@ note:
 console.log(`serer is listening at ${PORT}...`);
 ```
 
+
+
+## middleware
+
++ Run scripts that set and use environment variables across platforms with cross-env.
+
+  `yarn add cross-env`
+
+  ```javascript
+   "start": "node ./src/index.js",
+   "dev": "cross-env NODE_ENV=development nodemon ./src/index.js"
+  ```
+
+  `yarn start` -> `yarn dev`
+
++ Adding `Morgan`  middleware as an HTTP request logger middleware for node js.
+
+  ```shell
+  ::1 - - [Sun, 20 Oct 2024 19:20:33 GMT] "POST / HTTP/1.1" 200 14 "-" "PostmanRuntime/7.42.0"
+  ::1 - - [Sun, 20 Oct 2024 19:20:41 GMT] "GET / HTTP/1.1" 200 14 "-" "PostmanRuntime/7.42.0"
+  
+  ```
+
++ Add `Helmet` middleware, Helmet helps you secure your Express apps by setting various HTTP headers.
+
++ Adding Express json and urlencoded middleware to parse json request from body and url.
+
++ Adding `Express-mongo-sanitize` middleware which sanitizes user-supplied data to prevent MongoDB Operator Injection.
+
++ Adding `Cookie-parser` middleware to parse Cookie header and populate req.cookies with an object keyed by the cookie names.
+
++ Adding `Compression` middleware to compress response bodies for all request that traverse through the middleware.
+
++ Adding `Express-fileupload` middleware to make uploaded files accessible from req.files.
+
++ Adding `cors` middleware to protect and restrict access to the server.
+
+  ```java
+  app.use(
+    cors({
+      origin: "http://localhost:3000",
+    })
+  );
+  ```
+
+# Problems & Solutions
+
++ Run scripts that set and use environment variables across platforms with cross-env.
+
++ forgot to ignore node_modules & .env 
+
+  1. update .gitignore
+
+  2. git rm -r --cached 
+  3. git add . / git commit again
+  4. push
+
++ md中npm package + version
+
+  ![npm version](https://img.shields.io/npm/v/express.svg)
