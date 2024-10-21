@@ -304,6 +304,31 @@ router.route("/register").post(register);
 
 🌟recommened prefix rule: `"/api/v1"`
 
+
+
+## Integrate Mongodb to our application
+
+Let's add mongodb as our main database.
+
+**Objectifs**
+
+- Create a mongodb cluster.
+- Connect to the database from our express app.
+- Handle mongodb connection errors.
+- Activate debugging mode.
+
+```
+.env
+DATABASE_URL=xxx.net/database_name
+
+index.js
+const { DATABASE_URL } = process.env;
+
+yarn add mongoose
+```
+
+
+
 # Problems & Solutions
 
 + Run scripts that set and use environment variables across platforms with cross-env.
@@ -377,4 +402,7 @@ router.route("/register").post(register);
 
     place json before route
 
-    
++ fail to load env variables using dotenv
+
+  `.env` must be under the same dir as package.json
+

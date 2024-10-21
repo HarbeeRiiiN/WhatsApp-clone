@@ -1,13 +1,34 @@
-import app from "./app.js";
 import dotenv from "dotenv";
+import app from "./app.js";
 import logger from "./configs/logger.config.js";
-
+import mongoose from "mongoose";
 // dotEnv config
 dotenv.config();
 
 // dot variables
+const { DATABASE_URL } = process.env;
 const PORT = process.env.PORT || 8081;
-console.log(process.env.NODE_ENV);
+
+// exit on mongodb error
+mongoose.connection.on("error", (error) => {
+  logger.error(`Mongodb connection error : ${error}`);
+  process.exit(1);
+});
+
+// mongodb debug mode
+if (process.env.NODE_ENV === "debug") {
+  mongoose.set("debug", true);
+}
+
+// mongodb connection
+mongoose
+  .connect(DATABASE_URL, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => {
+    logger.info("Connected to Mongodb.");
+  });
 
 let server;
 server = app.listen(PORT, () => {
