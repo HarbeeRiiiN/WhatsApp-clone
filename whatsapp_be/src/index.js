@@ -1,14 +1,15 @@
-import dotenv from "dotenv";
 import app from "./app.js";
-import logger from "./configs/logger.config.js";
-import mongoose from "mongoose";
-
+import dotenv from "dotenv";
 // dotEnv config
 dotenv.config();
 
+import logger from "./configs/logger.config.js";
+
+import mongoose from "mongoose";
+
 // dot variables
 const { DATABASE_URL } = process.env;
-const PORT = process.env.PORT || 8081;
+const PORT = process.env.PORT || 8082;
 
 // exit on mongodb error
 mongoose.connection.on("error", (error) => {

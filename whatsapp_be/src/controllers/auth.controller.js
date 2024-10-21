@@ -3,7 +3,6 @@ export const register = async (req, res, next) => {
   try {
     // fetch fields we want
     const { name, email, picture, status, password } = req.body;
-
     const newUser = await createUser({
       name,
       email,
@@ -11,8 +10,7 @@ export const register = async (req, res, next) => {
       status,
       password,
     });
-
-    res.status(200).send("OK");
+    res.json(newUser);
   } catch (error) {
     next(error);
   }

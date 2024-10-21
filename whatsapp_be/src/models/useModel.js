@@ -1,5 +1,9 @@
 import mongoose from "mongoose";
 import validator from "validator";
+
+// env variables
+const { DEFAULT_PICTURE, DEFAULT_STATUS } = process.env;
+
 const userSchema = mongoose.Schema(
   {
     name: {
@@ -15,12 +19,11 @@ const userSchema = mongoose.Schema(
     },
     picture: {
       type: String,
-      default:
-        "https://media.pitchfork.com/photos/65dfd21824cf8305d775f0cd/1:1/w_320,c_limit/Charli-XCX-Brat.jpg",
+      default: DEFAULT_PICTURE,
     },
     status: {
       type: String,
-      default: "Hey there! I'm using whatsapp!",
+      default: DEFAULT_STATUS,
     },
     password: {
       type: String,
@@ -34,7 +37,7 @@ const userSchema = mongoose.Schema(
   },
   {
     collection: "users",
-    timeStamps: true,
+    timestamps: true,
   }
 );
 

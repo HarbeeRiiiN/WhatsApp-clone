@@ -476,6 +476,16 @@ export const register = async (req, res, next) => {
 
 
 
+🌟configure default value in `.env` + **Destructuring Assignment**
+
+```javascript
+// env variables
+const { DEFAULT_PICTURE, DEFAULT_STATUS } = process.env;
+
+```
+
+
+
 
 
 
@@ -561,3 +571,33 @@ export const register = async (req, res, next) => {
 
   `.env` must be under the same dir as package.json
 
++ fail to use the default value (while it works in other js)
+
+  ```javascript
+  const user = await new UserModel({
+      name,
+      email,
+      picture: picture ?? DEFAULT_PICTURE,
+      status: status ?? DEFAULT_STATUS,
+      password,
+    }).save();
+  };
+  
+  ```
+
+  sol: make sure configuring the dotenv at the top of everything in the entry js (index.js) + 
+
+  > https://stackoverflow.com/questions/59444928/process-env-doesnt-show-variables-outside-app-js
+
+  ```javascript
+  import dotenv from "dotenv";
+  // dotEnv config
+  dotenv.config();
+  
+  import app from "./app.js";
+  import logger from "./configs/logger.config.js";
+  import mongoose from "mongoose";
+  
+  ```
+
+  

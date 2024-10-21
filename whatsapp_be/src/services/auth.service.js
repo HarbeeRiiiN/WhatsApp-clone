@@ -1,6 +1,12 @@
 import createHttpError from "http-errors";
 import validator from "validator";
 import UserModel from "../models/useModel.js";
+import dotenv from "dotenv";
+// dotEnv config
+dotenv.config();
+
+// env variables
+const { DEFAULT_PICTURE, DEFAULT_STATUS } = process.env;
 
 export const createUser = async (userData) => {
   const { name, email, picture, status, password } = userData;
@@ -46,13 +52,13 @@ export const createUser = async (userData) => {
     );
   }
 
-  // check password length
   if (
     !validator.isLength(password, {
       min: 6,
       max: 32,
     })
   ) {
+    // check password length
     throw createHttpError.BadRequest(
       "Make sure the length of the password is between 6 and 32 chars long"
     );
@@ -60,6 +66,13 @@ export const createUser = async (userData) => {
 
   // // check password format
   // if(!validator.isStrongPassword)
+  const user = await new UserModel({
+    name,
+    email,
+    picture: picture || DEFAULT_PICTURE,
+    status: status || DEFAULT_STATUS,
+    password,
+  }).save();
 
-  const user = await new UserModel({});
+  return user;
 };
