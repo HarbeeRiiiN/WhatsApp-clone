@@ -2,6 +2,7 @@ import dotenv from "dotenv";
 import app from "./app.js";
 import logger from "./configs/logger.config.js";
 import mongoose from "mongoose";
+
 // dotEnv config
 dotenv.config();
 

@@ -1,3 +1,5 @@
+# Init Backend
+
 ## Backend Settings
 
 1. init project: `yarn init`
@@ -326,6 +328,159 @@ const { DATABASE_URL } = process.env;
 
 yarn add mongoose
 ```
+
+---
+
+
+
+# Authentication
+
+model + controller(function)
+
+## **User model**
+
+create the user model.
+
+```
+models
+├── index.js
+└── useModel.js
+└── xxxModel.js
+```
+
+**Objectives**
+
+- Create a user model.
+
+- Learn the **proper validation** for Mongoose schema.
+
+  ```js
+  const userSchema = mongoose.Schema({
+    name: {
+      type: String,
+      required: [true, "Please provide your name"],
+    },
+    ...
+    
+  });
+  ```
+
+  
+
+- Use `validator`  in the model schema.
+
+  ```js
+   email: {
+      type: String,
+      required: [true, "Please provide your email address"],
+      unique: [true, "This email address already exist"],
+      lowercase: true,
+      validate: [validator.isEmail, "Please provide a valid email"],
+    },
+  ```
+
+  
+
+create Schema:
+
+```js
+const userSchema = mongoose.Schema({
+  name: {
+    type: String,
+    required: [true, "Please provide your name"],
+  },
+});
+```
+
+🌟：why not only `true`, but also message *(#18, 3:00)*
+
+​	Do **VALIDATION** here
+
+​	data: validate in the frontend, validate in the server, validate the schema
+
+
+
+
+
+## **Register a user**
+
+register function for the user.
+
+**Objectives**
+
+- Validate the user data.
+
+- Create a `service` to add the user to the database.
+
+  ```
+  services
+  └── auth.service.js
+  ```
+
+  ```js
+  // controller
+  try {
+      // fetch fields we want
+      const { name, email, picture, status, password } = req.body;
+  
+      const newUser = 👉await👈 createUser({
+        name,
+        email,
+        picture,
+        status,
+        password,
+      });
+  
+      res.status(200).send("OK");
+    } 👉catch (error) {👈
+      next(error);
+    }
+  };
+  
+  
+  // service
+  export const createUser = 👉async👈 (userData) => {
+    const { name, email, picture, status, password } = userData;
+    //Validation
+    // check if fields are empty
+    if (!name || !email || !password) {
+      👉throw createHttpError.BadRequest("Please fill all fields");👈
+    }
+  };
+  
+  
+  ```
+
+  
+
+- Generate access and refresh tokens.
+
+- Store the refresh token in the cookies.
+
+- Send back the user data to the frontend.
+
+
+
+model v.s. controller
+
+```js
+// in controller
+export const register = async (req, res, next) => {
+  try {
+    👉 const { name, email, picture, status, password } = req.body; 👈
+  } catch (error) {
+    res.status(500).json(next(error));
+  }
+};
+```
+
+
+
+
+
+
+
+---
 
 
 
