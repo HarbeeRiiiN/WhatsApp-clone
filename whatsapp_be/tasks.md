@@ -262,7 +262,47 @@ Adding a custom logger, Handling uncaughtException, unhandledRejection errors, S
   }
   ```
 
+
+
+## Setup routes and controllers
+
+Adding routes setup and controllers functions.
+
+**Objectifs**
+
+- Add routes setup and files.
+
+- Trim incoming requests. (trim-request)
+
+  ```
+  {"body":"[   ]hello world[       ]"}
+  ⬇️
+  router.route("/register").post([trimRequest.all,]register);
+  ```
+
   
+
+- **Add controllers functions.** Separated from routers
+
+```
+routes
+├── auth.route.js: router.route(path).METHOD((req, res) => {}) export
+└── index.js: import router.use("prefix", cusRoute)
+
+in app.js:
+app.use("/api/v1", routes);
+
+
+controllers
+└── auth.controller.js
+
+import { register } from "../controllers/auth.controller";
+const router = express.Router();
+router.route("/register").post(register);
+
+```
+
+🌟recommened prefix rule: `"/api/v1"`
 
 # Problems & Solutions
 
@@ -278,4 +318,63 @@ Adding a custom logger, Handling uncaughtException, unhandledRejection errors, S
 
 + md中npm package + version
 
++ `next()` in Express
+
+  https://stackoverflow.com/questions/10695629/what-is-the-parameter-next-used-for-in-express
+
+  ```javascript
+  app.get("/", function(httpRequest, httpResponse, next){
+      httpResponse.write("Hello");
+      next(); //remove this and see what happens 
+  });
+  
+  app.get("/", function(httpRequest, httpResponse, next){
+      httpResponse.write(" World !!!");
+      httpResponse.end();
+  });
+  
+  //without next(), the requiest for '/' never ends
+  ```
+
+  
+
+  1. middleware： app.use()
+
+  2. routing
+  3. depends on the order of the usage of `use`
+
   ![npm version](https://img.shields.io/npm/v/express.svg)
+
+  + missing middleware
+
+    ```
+    export const register = async (req, res, next) => {
+      try {
+        console.log("* ckp");
+        console.log(req.body);
+        res.send(req.body);
+      } catch (error) {
+        res.status(500).json(next(error));
+      }
+    };
+    output:
+    * ckp
+    undefined
+    ```
+
+    check app.js:
+
+    ```
+    // routes
+    app.use("/api/v1", routes);
+    
+    ...
+    
+    // parse json request body
+    app.use(express.json());
+    
+    ```
+
+    place json before route
+
+    
