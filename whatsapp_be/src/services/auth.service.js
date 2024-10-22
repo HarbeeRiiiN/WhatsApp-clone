@@ -1,9 +1,10 @@
-import createHttpError from "http-errors";
-import validator from "validator";
-import UserModel from "../models/useModel.js";
 import dotenv from "dotenv";
 // dotEnv config
 dotenv.config();
+import createHttpError from "http-errors";
+import validator from "validator";
+import UserModel from "../models/useModel.js";
+import bcrypt from "bcrypt";
 
 // env variables
 const { DEFAULT_PICTURE, DEFAULT_STATUS } = process.env;
@@ -75,5 +76,17 @@ export const createUser = async (userData) => {
     password,
   }).save();
 
+  return user;
+};
+
+export const signUser = async (email, password, next) => {
+  const user = await UserModel.findOne({ email: email.toLowerCase() }).lean();
+  if (!user) {
+    throw createHttpError.NotFound("Invalid User");
+  }
+  let passwordMatches = await bcrypt.compare(password, user.password);
+  if (!passwordMatches) {
+    throw createHttpError.NotFound("Invalid User");
+  }
   return user;
 };
