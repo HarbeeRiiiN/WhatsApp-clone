@@ -451,9 +451,34 @@ register function for the user.
   
   ```
 
-  
+- use Bcrypt to hash password on presave in user model
 
-- Generate access and refresh tokens.
+  Building UserModel: `pre`
+  
+  ```javascript
+  userSchema.pre("save", async function (next) {
+    try {
+      if (this.isNew) {
+        const salt = await bcrypt.genSalt(12);
+        const hashedPassword = await bcrypt.hash(this.password, salt);
+        this.password = hashedPassword;
+      }
+    } catch (error) {
+      next(error);
+    }
+  });
+  
+  ```
+  
+  🌟**We didn't do the hashing in the server, but in the schema itself!**
+  
+- Generate access and refresh tokens. **(JWT)**
+
+  1. `.env` set `ACCESS_TOKEN_SECRET` and `REFRESH_TOKEN_SECRET`
+
+  2. ctoken.service.js: generateToken
+
+  3. set cookie
 
 - Store the refresh token in the cookies.
 

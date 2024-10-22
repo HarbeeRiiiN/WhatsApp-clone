@@ -64,8 +64,9 @@ export const createUser = async (userData) => {
     );
   }
 
-  // // check password format
-  // if(!validator.isStrongPassword)
+  // hash password ---> to be done in the user mode
+
+  // addingg user to database
   const user = await new UserModel({
     name,
     email,
