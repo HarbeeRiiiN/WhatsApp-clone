@@ -57,14 +57,23 @@ app.get("/error", (req, res) => {
   throw createHttpError.BadRequest("this route has an error.");
 });
 
+// if the path dose not match any router, automatically throw createHttpError.NotFound
+// which would be then catched by the middleware we defined next
+
 // error handling
+// 404 -> pass it to the following middleware, arguments: (err, req, res, next)
 app.use(async (req, res, next) => {
-  console.log("* First");
+  console.log("* Not Found Error Handling ... ");
+  res.status(404);
   next(createHttpError.NotFound("This route does not exist."));
 });
 
+// app.use((err, req, res, next) => {
+//   next(err);
+// });
+
 app.use(async (err, req, res, next) => {
-  console.log("* Second");
+  console.log("* 500 Error Handling ... ");
   res.status(err.status || 500);
   res.send({
     error: {

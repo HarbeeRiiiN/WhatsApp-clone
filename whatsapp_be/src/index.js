@@ -40,7 +40,6 @@ server = app.listen(PORT, () => {
 });
 
 // handle server errors
-
 const exitHandler = () => {
   if (server) {
     logger.info("Server closed.");
