@@ -11,10 +11,6 @@ import routes from "./routes/index.js";
 
 // create app
 const app = express();
-
-// parse json request body
-app.use(express.json());
-
 // middleware
 // cors
 app.use(cors());
@@ -29,11 +25,14 @@ app.use(helmet());
 // parse json request url
 app.use(express.urlencoded({ extended: true }));
 
-// sanitize request data
-app.use(mongoSanitize());
-
 // enable cookie parser
 app.use(cookieParser());
+
+// parse json request body
+app.use(express.json());
+
+// sanitize request data
+app.use(mongoSanitize());
 
 // gzip compression
 app.use(compression());

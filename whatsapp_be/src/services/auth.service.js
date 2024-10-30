@@ -82,11 +82,11 @@ export const createUser = async (userData) => {
 export const signUser = async (email, password, next) => {
   const user = await UserModel.findOne({ email: email.toLowerCase() }).lean();
   if (!user) {
-    throw createHttpError.NotFound("Invalid User");
+    throw createHttpError.NotFound("Invalid Credentials.");
   }
   let passwordMatches = await bcrypt.compare(password, user.password);
   if (!passwordMatches) {
-    throw createHttpError.NotFound("Invalid User");
+    throw createHttpError.NotFound("Invalid Credentials.");
   }
   return user;
 };

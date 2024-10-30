@@ -1,9 +1,11 @@
 import React from "react";
-
+import RegisterForm from "../components/auth/RegisterForm";
 export default function Register() {
   return (
-    <div>
-      <h1 style={{ fontSize: 100 }}> Register</h1>
+    <div className="h-screen dark:bg-dark_bg_1 flex item-center justify-center py-[19px] overflow-hidden">
+      <div className="flex w-[1600px] mx-auto h-full">
+        <RegisterForm />
+      </div>
     </div>
   );
 }

@@ -1,5 +1,8 @@
+import createHttpError from "http-errors";
 import { createUser, signUser } from "../services/auth.service.js";
-import { generateToken } from "../services/token.service.js";
+import { generateToken, verifyToken } from "../services/token.service.js";
+import { findUser } from "../services/user.service.js";
+
 export const register = async (req, res, next) => {
   try {
     // fetch fields we want
@@ -26,9 +29,10 @@ export const register = async (req, res, next) => {
 
     res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
-      path: "/api/v1/auth/refreshtoken",
+      path: "/api/v1/auth/refreshToken",
       maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
     });
+
     console.table({ access_token, refresh_token });
     res.json({
       message: "register success",
@@ -63,11 +67,13 @@ export const login = async (req, res, next) => {
       process.env.REFRESH_TOKEN_SECRET
     );
 
-    res.cookie("refreshToken", refreshToken, {
+    res.cookie("refreshToken", refresh_token, {
       httpOnly: true,
-      path: "/api/v1/auth/refreshtoken",
+      path: "/api/v1/auth/refreshToken",
       maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
     });
+
+    console.table({ access_token, refresh_token });
 
     res.json({
       message: "register success",
@@ -88,7 +94,7 @@ export const login = async (req, res, next) => {
 export const logout = async (req, res, next) => {
   try {
     res.clearCookie("refreshToken", {
-      path: "/api/v1/auth/refreshtoken",
+      path: "/api/v1/auth/refreshToken",
     });
     res.json({
       message: "Logged out success",
@@ -100,7 +106,31 @@ export const logout = async (req, res, next) => {
 
 export const refreshToken = async (req, res, next) => {
   try {
+    const refresh_token = req.cookies.refreshToken;
+    if (!refresh_token) throw createHttpError.Unauthorized("Please Login");
+    const check = await verifyToken(
+      refresh_token,
+      process.env.REFRESH_TOKEN_SECRET
+    );
+
+    const user = await findUser(check.userId);
+    const access_token = await generateToken(
+      { userId: user._id },
+      "1d",
+      process.env.ACCESS_TOKEN_SECRET
+    );
+    res.json({
+      message: "Token refreshed.",
+      access_token,
+      user: {
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        picture: user.picture,
+        status: user.status,
+      },
+    });
   } catch (error) {
-    res.status(500).json(next(error));
+    next(error);
   }
 };
