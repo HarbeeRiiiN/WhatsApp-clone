@@ -513,7 +513,19 @@ const { DEFAULT_PICTURE, DEFAULT_STATUS } = process.env;
 
 
 
+# Conversation
 
+🌟in create_open_conversation
+
+needs to call functions in service.js
+
+since the error has been handled by throwing new errors in service.js. there's no need to handle it in the callee function again. 
+
+also don't forget to use await. 
+
+![2](./src/note_figs/2.png)
+
+![3](./src/note_figs/3.png)
 
 ---
 
