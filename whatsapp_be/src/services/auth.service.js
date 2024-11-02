@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 dotenv.config();
 import createHttpError from "http-errors";
 import validator from "validator";
-import UserModel from "../models/useModel.js";
+import UserModel from "../models/userModel.js";
 import bcrypt from "bcrypt";
 
 // env variables
